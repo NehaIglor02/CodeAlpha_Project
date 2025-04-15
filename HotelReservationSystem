@@ -1,0 +1,104 @@
+import java.util.*;
+
+class Room {
+    int roomNumber;
+    boolean isBooked;
+
+    Room(int roomNumber) {
+        this.roomNumber = roomNumber;
+        this.isBooked = false;
+    }
+
+    void book() {
+        isBooked = true;
+    }
+
+    void unbook() {
+        isBooked = false;
+    }
+
+    public String toString() {
+        return "Room " + roomNumber + " - " + (isBooked ? "Booked" : "Available");
+    }
+}
+
+class Hotel {
+    List<Room> rooms = new ArrayList<>();
+
+    Hotel(int numberOfRooms) {
+        for (int i = 1; i <= numberOfRooms; i++) {
+            rooms.add(new Room(i));
+        }
+    }
+
+    void showAvailableRooms() {
+        System.out.println("\nAvailable Rooms:");
+        for (Room room : rooms) {
+            if (!room.isBooked) {
+                System.out.println(room);
+            }
+        }
+    }
+
+    void bookRoom(int roomNumber) {
+        for (Room room : rooms) {
+            if (room.roomNumber == roomNumber) {
+                if (!room.isBooked) {
+                    room.book();
+                    System.out.println("Room " + roomNumber + " booked successfully!");
+                    return;
+                } else {
+                    System.out.println("Room " + roomNumber + " is already booked.");
+                    return;
+                }
+            }
+        }
+        System.out.println("Room not found.");
+    }
+
+    void showAllRooms() {
+        System.out.println("\nAll Rooms Status:");
+        for (Room room : rooms) {
+            System.out.println(room);
+        }
+    }
+}
+
+public class HotelReservationSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Hotel hotel = new Hotel(5); // Hotel with 5 rooms
+        int choice;
+
+        do {
+            System.out.println("\n--- Hotel Reservation System ---");
+            System.out.println("1. Show Available Rooms");
+            System.out.println("2. Book a Room");
+            System.out.println("3. Show All Bookings");
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    hotel.showAvailableRooms();
+                    break;
+                case 2:
+                    System.out.print("Enter room number to book: ");
+                    int roomNumber = scanner.nextInt();
+                    hotel.bookRoom(roomNumber);
+                    break;
+                case 3:
+                    hotel.showAllRooms();
+                    break;
+                case 0:
+                    System.out.println("Thank you for Visit !");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (choice != 0);
+
+        scanner.close();
+    }
+}
